@@ -11,9 +11,6 @@ const Inicio = ({navigation}) => {
         <TouchableOpacity style={styles.buttonSecondary} onPress={() => navigation.navigate('Boletas')}>
           <Text style={styles.buttonText}>Boletas</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSecondary} onPress={() => navigation.navigate('Formulario')}>
-          <Text style={styles.buttonText}>Formlulario</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
