@@ -5,7 +5,7 @@ const Inicio = ({navigation}) => {
     <View style={styles.container}>
       <Text style={styles.title}>Boletas App</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonPrimary} onPress={() => navigation.navigate('CargarViaje')}>
+        <TouchableOpacity style={styles.buttonPrimary} onPress={() => navigation.navigate('Selecciona un Cliente')}>
           <Text style={styles.buttonText}>Cargar Viaje</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.buttonSecondary} onPress={() => navigation.navigate('Boletas')}>
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FAF3E0', // Fondo color crema
+    backgroundColor:  'white',
   },
   title: {
     fontSize: 28,

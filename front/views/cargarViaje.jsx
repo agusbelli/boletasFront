@@ -1,90 +1,112 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { useForm, Controller } from "react-hook-form"
+import { useForm, Controller } from 'react-hook-form';
+import { useRoute } from '@react-navigation/native';
 
 const CargarViaje = () => {
-  const { control, handleSubmit, formState: { errors }, watch, reset } = useForm({
-    defaultValues: {
-      producto: "",
-      cantidad: "",
-      unidadMedida: "",
-      costo:"",
-    },
-  })
+  const route = useRoute();
+  const cliente = route.params.item;
 
-  const [entregas, setEntregas] = useState([])
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset,
+  } = useForm({
+    defaultValues: {
+      producto: '',
+      cantidad: '',
+      unidadMedida: '',
+      costo: '',
+    },
+  });
+
+  const [entregas, setEntregas] = useState([]);
+
   const productos = [
     { id: 1, nombre: 'Producto 1' },
     { id: 2, nombre: 'Producto 2' },
     { id: 3, nombre: 'Producto 3' },
     { id: 4, nombre: 'Producto 4' },
-    { id: 5, nombre: 'Producto 5' }
-];
+    { id: 5, nombre: 'Producto 5' },
+  ];
 
-  //AGREGAR VIAJE AL ARREGLO
+  // AGREGAR VIAJE AL ARREGLO
   const onSubmit = (data) => {
-    let p = data.producto
-    if (!p) {
-      p = productos[0].nombre
-    }else if (p==='otro') {
-      p = data.otroProducto
+    if (entregas.length === 5) {
+      alert('Solo puedes crear hasta 5 entregas');
+    } else {
+      let p = data.producto;
+      if (!p) {
+        p = productos[0].nombre;
+      } else if (p === 'otro') {
+        p = data.otroProducto;
+      }
+      let u = data.unidadMedida || 'KG';
+      const newData = {
+        producto: p,
+        cantidad: data.cantidad,
+        unidadMedida: u,
+        costo: data.costo,
+        idCliente: 1,
+      };
+      setEntregas([...entregas, newData]);
+      reset({
+        producto: '',
+        cantidad: '',
+        unidadMedida: '',
+        costo: '',
+      });
     }
-    let u = data.unidadMedida || 'KG';
-    const newData =  {...data, producto:p, unidadMedida: u}
-    setEntregas([...entregas, newData])
-    reset({
-      producto: '', // Restablece el valor de 'producto' al vacío
-      cantidad: '', // Restablece el valor de 'cantidad' al vacío
-      unidadMedida: '', // Restablece el valor de 'unidadMedida' al vacío
-      costo: '', // Restablece el valor de 'costo' al vacío
-    });
   };
 
-    //ELIMINAR VIAJE DEL ARREGLO
+  // ELIMINAR VIAJE DEL ARREGLO
   const eliminarEntrega = (index) => {
     const nuevasEntregas = [...entregas];
     nuevasEntregas.splice(index, 1);
     setEntregas(nuevasEntregas);
   };
-  const watchin = watch()
+  const watchin = watch();
 
   return (
-    
     <View style={styles.container}>
-      <Text style={styles.title}>Cargar Viaje</Text>
+      <Text style={styles.title}>{cliente.nombre}</Text>
       <View style={styles.form}>
         <View style={styles.formGroup}>
-        <Text>Producto:</Text>
           <Controller
             name="producto"
             control={control}
             render={({ field }) => (
-            <Picker
-              selectedValue={field.value}
-              onValueChange={field.onChange}
-              style={styles.picker}
-            >
-              {productos?.map(p=>(<Picker.Item  key={p.id} label={p.nombre} value={p.nombre} />))}
-              <Picker.Item label='otro' value='otro' />
-            </Picker>
+              <Picker 
+                selectedValue={field.value}
+                onValueChange={field.onChange}
+                style={styles.picker}
+              >
+                {productos?.map((p) => (
+                  <Picker.Item key={p.id} label={p.nombre} value={p.nombre} />
+                ))}
+                <Picker.Item label="Otro" value="otro" />
+              </Picker>
             )}
           />
-          {watchin.producto==='otro' && <Controller
-            name="otroProducto"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextInput
-                placeholder="otro producto..."
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                style={styles.input}
-              />
-              
-            )}
-          />}
+          {watchin.producto === 'otro' && (
+            <Controller
+              name="otroProducto"
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  placeholder="Otro producto..."
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  style={styles.input}
+                />
+              )}
+            />
+          )}
         </View>
 
         <View style={styles.formGroup}>
@@ -92,15 +114,16 @@ const CargarViaje = () => {
             name="cantidad"
             control={control}
             rules={{ required: true }}
-            render={({ field: { onChange, onBlur, value  }}) => (
-            <TextInput
-                keyboardType='numeric'
-                placeholder="cantidad..."
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextInput
+                keyboardType="numeric"
+                placeholder="Cantidad..."
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
                 style={styles.input}
-            />)}
+              />
+            )}
           />
         </View>
 
@@ -115,7 +138,7 @@ const CargarViaje = () => {
                 style={styles.picker}
               >
                 <Picker.Item label="Kg" value="KG" />
-                <Picker.Item label="gramos" value="G" />
+                <Picker.Item label="Gramos" value="G" />
                 <Picker.Item label="Unidad" value="UNIDAD" />
                 <Picker.Item label="Lata" value="LATA" />
               </Picker>
@@ -124,14 +147,13 @@ const CargarViaje = () => {
         </View>
 
         <View style={styles.formGroup}>
-          <Text>Costo:</Text>
           <Controller
             name="costo"
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
-                keyboardType='numeric'
+                keyboardType="numeric"
                 placeholder="$0"
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -142,19 +164,22 @@ const CargarViaje = () => {
           />
         </View>
 
-        <TouchableOpacity style={styles.buttonPrimary} onPress={handleSubmit(onSubmit)}>
+        <TouchableOpacity
+          style={styles.buttonPrimary}
+          onPress={handleSubmit(onSubmit)}
+        >
           <Text style={styles.buttonText}>Guardar</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Mostrar la lista de entregas (si es que hay entregas)*/}
+      {/* Mostrar la lista de entregas (si es que hay entregas) */}
       {entregas.length !== 0 && (
         <View style={styles.entregasContainer}>
           <Text style={styles.entregasTitle}>Entregas Realizadas:</Text>
           {entregas.map((entrega, index) => (
             <View key={index} style={styles.entregaItem}>
               <Text style={styles.entregaText}>
-                {entrega.producto} {entrega.cantidad} {entrega.unidadMedida} 
+                {entrega.producto} {entrega.cantidad} {entrega.unidadMedida} ${entrega.costo}
               </Text>
               <TouchableOpacity onPress={() => eliminarEntrega(index)}>
                 <Text style={styles.botonEliminar}>X</Text>
@@ -172,7 +197,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FAF3E0',
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 28,
@@ -181,23 +206,21 @@ const styles = StyleSheet.create({
     color: '#FF7F50',
   },
   form: {
-    width: '80%', // Ajusta el ancho del formulario según tus necesidades
+    width: '80%',
   },
   formGroup: {
     marginVertical: 10,
   },
   input: {
+    margin:5,
     backgroundColor: 'white',
     height: 40,
-    borderColor: 'gray',
+    borderColor: 'lightgray',
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
   },
-  picker: {
-    height: 40,
-    width: '100%', // Ajusta el ancho del picker según tus necesidades
-  },
+
   buttonPrimary: {
     backgroundColor: '#FF7F50',
     padding: 15,
@@ -213,7 +236,7 @@ const styles = StyleSheet.create({
   entregasContainer: {
     marginTop: 20,
     borderTopWidth: 1,
-    borderTopColor: 'gray',
+    borderTopColor: 'lightgray',
   },
   entregasTitle: {
     fontSize: 28,
@@ -237,6 +260,14 @@ const styles = StyleSheet.create({
   botonEliminar: {
     color: 'red',
     fontSize: 30,
+  },
+  picker: {
+    height: 40,
+    width: '100%',
+    backgroundColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+
   },
 });
 
