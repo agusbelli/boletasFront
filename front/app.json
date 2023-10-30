@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Mis Boletas",
-    "description":"App de boletas para mi panaderia",
-    "slug": "mis-boletas-App",
+    "description": "App de boletas para mi panaderia",
+    "slug": "mis-boletas",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,6 +26,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "662fde07-306d-41d9-98ce-54903f365b95"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9b717e75-86cb-4208-8c47-f8352ef5fc8f"
+    },
+    "owner": "agusbelli"
   }
 }
