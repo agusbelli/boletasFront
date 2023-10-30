@@ -6,12 +6,15 @@ const Inicio = ({navigation}) => {
       <Text style={styles.title}>Boletas App</Text>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.buttonPrimary} onPress={() => navigation.navigate('Selecciona un Cliente')}>
-          <Text style={styles.buttonText}>Cargar Viaje</Text>
+          <Text style={styles.buttonText}>Cargar Viaje +</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonSecondary} onPress={() => navigation.navigate('Boletas')}>
-          <Text style={styles.buttonText}>Boletas</Text>
+        <TouchableOpacity style={styles.buttonSecondary} onPress={() => navigation.navigate('Registros')}>
+          <Text style={styles.buttonText}>Registros</Text>
         </TouchableOpacity>
       </View>
+        <TouchableOpacity style={styles.buttonSecondary} onPress={() => navigation.navigate('Boletas')}>
+          <Text style={styles.buttonText}>Descargar Boleta ⬇</Text>
+        </TouchableOpacity>
     </View>
   );
 };
